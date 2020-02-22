@@ -1,3 +1,6 @@
 [submodule "blockly"]
 	path = blockly
 	url = https://github.com/google/blockly.git
+[submodule "temi-apk-template"]
+	path = temi-apk-template
+	url = https://github.com/ray-hrst/temi-apk-template.git

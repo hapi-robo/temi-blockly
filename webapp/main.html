@@ -73,7 +73,9 @@
   <div id="blocklyDiv" style="position: absolute"></div>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <block type="show_image"></block>
+    <block type="speech_say"></block>
+    <block type="locations_goto"></block>
+    <block type="media_image"></block>
   </xml>
 
   <!-- Footer-->
@@ -99,11 +101,13 @@
       var element = blocklyArea;
       var x = 0;
       var y = 0;
+
       do {
         x += element.offsetLeft;
         y += element.offsetTop;
         element = element.offsetParent;
       } while (element);
+
       // Position blocklyDiv over blocklyArea.
       blocklyDiv.style.left = x + 'px';
       blocklyDiv.style.top = y + 'px';
@@ -111,6 +115,7 @@
       blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
       Blockly.svgResize(demoWorkspace);
     };
+    
     window.addEventListener('resize', onresize, false);
     onresize();
     Blockly.svgResize(demoWorkspace);
@@ -120,6 +125,8 @@
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
       var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
       alert(code);
+
+      // https://github.com/eligrey/FileSaver.js
     }
   </script>
 </body>
