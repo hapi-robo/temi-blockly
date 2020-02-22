@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+    table {
+      height: 100%;
+      width: 100%;
+    }
+    #blocklyArea {
+      height: 99%;
+    }
+  </style>
+
+  <title>temi Blockly</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Favicon-->
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+  
+  <!-- FontAwesome-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  
+  <!-- jQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+  <!-- Bootstrap-->
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <script type="text/javascript" src="/js/bootstrap/bootstrap.bundle.min.js"></script>
+
+  <!-- Blockly-->
+  <script src="../blockly/blockly_compressed.js"></script>
+  <script src="../blockly/javascript_compressed.js"></script>
+  <!-- <script src="../blockly/msg/js/en.js"></script> -->
+  <script src="../blocks/test.js"></script>
+  <script src="../generators/test.js"></script>
+</head>
+<body>
+  <!-- Header-->
+  <div class="p-3 mb-2 bg-danger text-white"><br>
+      <div class="container">
+          <h1 class="page-header"><i class="fas fa-robot"></i> temi Blockly</h1>
+          <p>Prototype</p>
+      </div>
+  </div>
+
+  <!-- Buttons -->
+  <p>
+    <button onclick="showCode()">Show Code</button>
+  </p>
+
+  <!-- Blockly Area-->
+  <table>
+    <tr>
+      <td id="blocklyArea">
+      </td>
+    </tr>
+  </table>
+
+  <div id="blocklyDiv" style="position: absolute"></div>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <block type="show_image"></block>
+  </xml>
+
+  <!-- Footer-->
+  <footer class="page-footer">
+      <!-- Copyright-->
+      <div class="footer-copyright text-center py-3">
+          <p>© 2019 hapi-robo st, Inc. — All Rights Reserved.</p>
+          <p> Made in
+              <a target="_blank" href="https://www.google.com/maps/place/Tokyo,+Japan">Tokyo, Japan.</a></p>
+      </div>
+  </footer>
+
+  <!-- Javascript-->
+  <script>
+    var blocklyArea = document.getElementById('blocklyArea');
+    var blocklyDiv = document.getElementById('blocklyDiv');
+    var demoWorkspace = Blockly.inject(blocklyDiv,
+        {media: '../blockly/media/',
+         toolbox: document.getElementById('toolbox')});
+
+    var onresize = function(e) {
+      // Compute the absolute coordinates and dimensions of blocklyArea.
+      var element = blocklyArea;
+      var x = 0;
+      var y = 0;
+      do {
+        x += element.offsetLeft;
+        y += element.offsetTop;
+        element = element.offsetParent;
+      } while (element);
+      // Position blocklyDiv over blocklyArea.
+      blocklyDiv.style.left = x + 'px';
+      blocklyDiv.style.top = y + 'px';
+      blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+      blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+      Blockly.svgResize(demoWorkspace);
+    };
+    window.addEventListener('resize', onresize, false);
+    onresize();
+    Blockly.svgResize(demoWorkspace);
+
+    function showCode() {
+      // Generate JavaScript code and display it.
+      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+      var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+      alert(code);
+    }
+  </script>
+</body>
+</html>
