@@ -28,12 +28,13 @@
 # SOFTWARE.
 #
 
-# abort if any command fails
+# immediately exit if any command exits with a non-zero status
 set -e
 
 # constants
 DEFAULT_ANDROID_HOME=~/Android/Sdk # default location on Linux
 TEMPLATE_DIR="temi-apk-template"
+TMP_DIR="tmp"
 
 # display usage instructions
 usage()
@@ -85,7 +86,7 @@ if [ -z "$1" ]; then
   echo "Missing TBO file"
   usage
 else
-  TBO_FILE=$1
+  TBO_FILE=${1%/}
 fi
 
 # check for app name
@@ -93,14 +94,11 @@ if [ -z "$2" ]; then
   echo "Missing app name"
   usage
 else
-  APP_NAME=$2
+  APP_NAME=${2%/}
 fi
 
 # make a copy of the template
-cp -avr "${TEMPLATE_DIR}" tmp
-
-# enter shortcut-template source code root directory
-cd tmp
+cp -avr "${TEMPLATE_DIR}" "${TMP_DIR}"
 
 # rename package
 # - lower case letters
@@ -121,51 +119,55 @@ esac
 if [ ${MACHINE} = "Linux" ]; then
   # modify files inline (Linux)
   echo "Linux"
-  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" app/build.gradle
-  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" app/src/main/AndroidManifest.xml
-  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" app/src/main/java/com/hapirobo/apk_template/MainActivity.java
-  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" app/src/androidTest/java/com/hapirobo/apk_template/ExampleInstrumentedTest.java
-  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" app/src/test/java/com/hapirobo/apk_template/ExampleUnitTest.java
-  sed -i "s/apk_name/${APP_NAME}/" app/src/main/res/values/strings.xml
-  sed -i "s/com.hapirobo.package_name/com.hapirobo.${PACKAGE_NAME}/" app/src/main/res/values/strings.xml
+  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/build.gradle"
+  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/src/main/AndroidManifest.xml"
+  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/src/main/java/com/hapirobo/apk_template/MainActivity.java"
+  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/src/androidTest/java/com/hapirobo/apk_template/ExampleInstrumentedTest.java"
+  sed -i "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/src/test/java/com/hapirobo/apk_template/ExampleUnitTest.java"
+  sed -i "s/apk_name/${APP_NAME}/" "${TMP_DIR}/app/src/main/res/values/strings.xml"
+  sed -i "s/com.hapirobo.package_name/com.hapirobo.${PACKAGE_NAME}/" "${TMP_DIR}/app/src/main/res/values/strings.xml"
 elif [ ${MACHINE} = "Darwin" ]; then
   # modify files inline
   echo "macOS"
-  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" app/build.gradle
-  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" app/src/main/AndroidManifest.xml
-  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" app/src/main/java/com/hapirobo/apk_template/MainActivity.java
-  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" app/src/androidTest/java/com/hapirobo/apk_template/ExampleInstrumentedTest.java
-  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" app/src/test/java/com/hapirobo/apk_template/ExampleUnitTest.java
-  sed -i .bak "s/apk_name/${APP_NAME}/" app/src/main/res/values/strings.xml
-  sed -i .bak "s/com.hapirobo.package_name/com.hapirobo.${PACKAGE_NAME}/" app/src/main/res/values/strings.xml
+  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/build.gradle"
+  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/src/main/AndroidManifest.xml"
+  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/src/main/java/com/hapirobo/apk_template/MainActivity.java"
+  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/src/androidTest/java/com/hapirobo/apk_template/ExampleInstrumentedTest.java"
+  sed -i .bak "s/apk_template/${APP_NAME_UNDERSCORE}/" "${TMP_DIR}/app/src/test/java/com/hapirobo/apk_template/ExampleUnitTest.java"
+  sed -i .bak "s/apk_name/${APP_NAME}/" "${TMP_DIR}/app/src/main/res/values/strings.xml"
+  sed -i .bak "s/com.hapirobo.package_name/com.hapirobo.${PACKAGE_NAME}/" "${TMP_DIR}/app/src/main/res/values/strings.xml"
 else
   echo "[Error] This script only supports Linux and Darwin."
   exit 1
 fi
 
 # rename directories
-mv -v app/src/main/java/com/hapirobo/apk_template "app/src/main/java/com/hapirobo/${APP_NAME_UNDERSCORE}"
-mv -v app/src/androidTest/java/com/hapirobo/apk_template "app/src/androidTest/java/com/hapirobo/${APP_NAME_UNDERSCORE}"
-mv -v app/src/test/java/com/hapirobo/apk_template "app/src/test/java/com/hapirobo/${APP_NAME_UNDERSCORE}"
+mv -v "${TMP_DIR}/app/src/main/java/com/hapirobo/apk_template" "${TMP_DIR}/app/src/main/java/com/hapirobo/${APP_NAME_UNDERSCORE}"
+mv -v "${TMP_DIR}/app/src/androidTest/java/com/hapirobo/apk_template" "${TMP_DIR}/app/src/androidTest/java/com/hapirobo/${APP_NAME_UNDERSCORE}"
+mv -v "${TMP_DIR}/app/src/test/java/com/hapirobo/apk_template" "${TMP_DIR}/app/src/test/java/com/hapirobo/${APP_NAME_UNDERSCORE}"
 
 # fill with custom code
-# https://unix.stackexchange.com/questions/141387/sed-replace-string-with-file-contents
-
+# https://stackoverflow.com/questions/22497246/insert-multiple-lines-into-a-file-after-specified-pattern-using-shell-script#22497499
+MAIN_ACTIVITY_FILE="${TMP_DIR}/app/src/main/java/com/hapirobo/${APP_NAME_UNDERSCORE}/MainActivity.java"
+cp -v "${TBO_FILE}" tbo
+sed -i '/\/\/\ insert\ code\ here/r tbo' "${MAIN_ACTIVITY_FILE}"
 
 # build app
+cd "${TMP_DIR}"
 ./gradlew clean
 ./gradlew build
+cd ..
 
 # move app to root directory
-cp -v app/build/outputs/apk/debug/app-debug.apk "../${APP_NAME_UNDERSCORE}.apk"
+cp -v "${TMP_DIR}/app/build/outputs/apk/debug/app-debug.apk" "${APP_NAME_UNDERSCORE}.apk"
 
 # clean up
 echo "Cleaning up..."
-cd ../
 rm -fr tmp
+rm tbo
 echo "Done"
 echo ""
 
 # print path to APK
-readlink -f "../${APP_NAME_UNDERSCORE}.apk"
+readlink -f "${APP_NAME_UNDERSCORE}.apk"
 exit 0

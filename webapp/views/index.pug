@@ -6,9 +6,15 @@ block content
 
     p
       button(onclick='buildCode()') Build
+      #{test}
 
     #blocklyDiv(style='height: 480px; width: 600px;')
     xml#toolbox(xmlns='https://developers.google.com/blockly/xml' style='display: none')
       block(type='speech_say')
       block(type='locations_goto')
-      block(type='media_image')
+      block(type='locations_go_home')
+      block(type='follow_unconstrained')
+      block(type='follow_constrained')
+      block(type='movement_turn')
+      block(type='movement_tilt')
+      block(type='movement_joystick')

@@ -1,25 +1,46 @@
 Blockly.JavaScript['speech_say'] = function(block) {
   var text_utterance = block.getFieldValue('utterance');
-  var code = `
-  TtsRequest ttsRequest = TtsRequest.create("${text_utterance}", false);
-  robot.speak(ttsRequest);
-  `;
-
+  var code = "robot.speak(TtsRequest.create('${text_utterance}', false));\n";
   return code;
 };
 
 Blockly.JavaScript['locations_goto'] = function(block) {
   var text_location = block.getFieldValue('location');
-  var code = `
-  robot.goTo(${text_location});
-  `;
-
+  var code = "robot.goTo('${text_location}');\n";
+  // @TODO Add wait
   return code;
 };
 
-Blockly.JavaScript['media_image'] = function(block) {
-  var checkbox_name = block.getFieldValue('NAME') == 'TRUE';
-  // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
+Blockly.JavaScript['follow_unconstrained'] = function(block) {
+  var code = "robot.beWithMe();\n";
+  return code;
+};
+
+Blockly.JavaScript['follow_constrained'] = function(block) {
+  var code = "robot.constraintBeWith();\n";
+  return code;
+};
+
+Blockly.JavaScript['movement_turn'] = function(block) {
+  var angle = block.getFieldValue('angle');
+  var code = "robot.turnBy(${angle});\n";
+  return code;
+};
+
+Blockly.JavaScript['movement_tilt'] = function(block) {
+  var number_name = block.getFieldValue('angle');
+  var code = "robot.tiltBy(${number_tilt})\n";
+  return code;
+};
+
+Blockly.JavaScript['movement_joystick'] = function(block) {
+  var number_x = block.getFieldValue('x');
+  var number_y = block.getFieldValue('y');
+  var code = "robot.skidJoy(${number_x}, ${number_y});\n";
+  return code;
+};
+
+Blockly.JavaScript['locations_go_home'] = function(block) {
+  var code = "robot.goTo('home base');\n";
   return code;
 };

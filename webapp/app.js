@@ -51,22 +51,26 @@ app.post('/save', function(req, res){
   const fs = require('fs');
 
   code = req.body.code;
-  console.log("Save");
+  console.log("[Code]");
   console.log(code);
+  console.log("Saving...");
 
   // write code to file
   // https://stackabuse.com/writing-to-files-in-node-js/
-  fs.writeFile('public/downloads/test.tbo', code, function(err){
+  fs.writeFile('../build/test.tbo', code, function(err){
     if (err)
       throw err;
     else
-      // execute('cd ../;sh apk_generator.sh webapp/public/downloads/test.tbo test');
-      // execute('mv ../test.apk public/downloads/.')
-      console.log("Thinking...");
+      // execute('cd ../;sh apk_generator.sh build/test.tbo test');
+      // execute('cp ../test.apk public/downloads/.')
+      // execute('adb connect 192.168.0.164;adb install public/downloads/test.apk');
+      console.log("Build finished");
   });
 
-  res.end('It worked!');
-  // res.render();
+  // res.end('It worked!');
+  // res.render('index', {
+  //   test: ' Hello World',
+  // });
 
   return;
 })
