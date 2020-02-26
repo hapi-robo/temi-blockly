@@ -166,6 +166,6 @@ rm -fr tmp
 echo "Done"
 echo ""
 
-# installation instructions
-echo "Remember to install the package."
+# print path to APK
+readlink -f "../${APP_NAME_UNDERSCORE}.apk"
 exit 0

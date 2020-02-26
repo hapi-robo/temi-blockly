@@ -1,0 +1,14 @@
+extends layout
+
+block content
+
+  .p-3.mb-2.bg-light.text-dark
+
+    p
+      button(onclick='buildCode()') Build
+
+    #blocklyDiv(style='height: 480px; width: 600px;')
+    xml#toolbox(xmlns='https://developers.google.com/blockly/xml' style='display: none')
+      block(type='speech_say')
+      block(type='locations_goto')
+      block(type='media_image')
