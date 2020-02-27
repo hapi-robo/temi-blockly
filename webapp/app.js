@@ -67,6 +67,7 @@ app.post('/save', function(req, res){
       console.log("Build finished");
   });
 
+  res.download('../README.md')
   // res.end('It worked!');
   // res.render('index', {
   //   test: ' Hello World',

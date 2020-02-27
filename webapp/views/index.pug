@@ -5,8 +5,13 @@ block content
   .p-3.mb-2.bg-light.text-dark
 
     p
-      button(onclick='buildCode()') Build
-      #{test}
+      button.btn(onclick='buildCode()') 
+        i.fa.fa-cogs
+        |  Build
+      button.btn
+        i.fa.fa-download
+        |  Download
+
 
     #blocklyDiv(style='height: 480px; width: 600px;')
     xml#toolbox(xmlns='https://developers.google.com/blockly/xml' style='display: none')
