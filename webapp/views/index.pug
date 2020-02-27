@@ -8,10 +8,12 @@ block content
       button.btn(onclick='buildCode()') 
         i.fa.fa-cogs
         |  Build
-      button.btn
-        i.fa.fa-download
-        |  Download
+      //- button.btn(onclick='download()')
+      //-   i.fa.fa-download
+      //-   |  Download
 
+    p
+      input#app-name-input.form-control(type='text', placeholder='App name')
 
     #blocklyDiv(style='height: 480px; width: 600px;')
     xml#toolbox(xmlns='https://developers.google.com/blockly/xml' style='display: none')

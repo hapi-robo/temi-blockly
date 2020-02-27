@@ -149,8 +149,7 @@ mv -v "${TMP_DIR}/app/src/test/java/com/hapirobo/apk_template" "${TMP_DIR}/app/s
 # fill with custom code
 # https://stackoverflow.com/questions/22497246/insert-multiple-lines-into-a-file-after-specified-pattern-using-shell-script#22497499
 MAIN_ACTIVITY_FILE="${TMP_DIR}/app/src/main/java/com/hapirobo/${APP_NAME_UNDERSCORE}/MainActivity.java"
-cp -v "${TBO_FILE}" tbo
-sed -i '/\/\/\ insert\ code\ here/r tbo' "${MAIN_ACTIVITY_FILE}"
+sed -i '/\/\/\ insert\ code\ here/r tbo' "${TMP_DIR}/app/src/main/java/com/hapirobo/${APP_NAME_UNDERSCORE}/MainActivity.java"
 
 # build app
 cd "${TMP_DIR}"
@@ -164,8 +163,7 @@ cp -v "${TMP_DIR}/app/build/outputs/apk/debug/app-debug.apk" "${APP_NAME_UNDERSC
 # clean up
 echo "Cleaning up..."
 rm -fr tmp
-rm tbo
-echo "Done"
+echo "[DONE]"
 echo ""
 
 # print path to APK

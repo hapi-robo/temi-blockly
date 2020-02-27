@@ -50,32 +50,27 @@ app.get('/', function(req, res) {
 app.post('/save', function(req, res){
   const fs = require('fs');
 
+  app_name = req.body.app_name;
   code = req.body.code;
+
   console.log("[Code]");
   console.log(code);
   console.log("Saving...");
 
   // write code to file
   // https://stackabuse.com/writing-to-files-in-node-js/
-  fs.writeFile('../build/test.tbo', code, function(err){
+  fs.writeFile("../tbo", code, function(err){
     if (err)
       throw err;
     else
-      // execute('cd ../;sh apk_generator.sh build/test.tbo test');
-      // execute('cp ../test.apk public/downloads/.')
+      execute(`cd ../;sh apk_generator.sh tbo ${app_name}`);
+      execute(`cp ../${app_name}.apk public/downloads/.`)
       // execute('adb connect 192.168.0.164;adb install public/downloads/test.apk');
       console.log("Build finished");
   });
 
-  res.download('../README.md')
-  // res.end('It worked!');
-  // res.render('index', {
-  //   test: ' Hello World',
-  // });
-
   return;
 })
-
 
 /*
  * Catch 404 and forward to the error handler

@@ -15,7 +15,7 @@ Blockly.Blocks['locations_goto'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Go to")
-        .appendField(new Blockly.FieldTextInput("kitchen"), "utterance");
+        .appendField(new Blockly.FieldTextInput("kitchen"), "location");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);

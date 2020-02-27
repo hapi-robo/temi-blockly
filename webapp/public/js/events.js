@@ -10,13 +10,14 @@ var demoWorkspace = Blockly.inject('blocklyDiv',
       toolbox: document.getElementById('toolbox')});
 
 /**
- * Start text-to-speech
+ * Generate code and send request to server to build the application
  */
 function buildCode() {
-  // generate JavaScript code and display it.
   Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-  var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
+  const app_name = document.getElementById('app-name-input').value;
+  const code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
 
+  console.log(app_name)
   // @TODO check that code is not empty
   // @TODO Busy indicator: https://www.cssscript.com/minimal-busy-indicator-javascript-css3/
   
@@ -26,7 +27,8 @@ function buildCode() {
     method: "POST",
     url: "save",
     data: { 
-      code: code 
+      app_name: app_name,
+      code: code
     },
     success: function(data) {
       console.log(data);
@@ -35,6 +37,13 @@ function buildCode() {
       console.log(e.message);
     }
   })
+}
+
+/**
+ * Download Button
+ */
+function download() {
+  location.href = "/static/downloads/test.apk"
 }
 
 /**
